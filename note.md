@@ -85,14 +85,14 @@ def index(name):
 + flask-bootstrap 为flask引入bootstrap文件, 直接在模板中导入{% extends 'bootstrap/base.html' %}
     * flask-bootstrap 基模板中定义的块
     * doc 整个HTMl文档
-    * html_attribs  <html>标签属性
-    * html  <html>标签中的内容
-    * head  <head>标签中的内容
-    * title  <title>标签中的内容
-    * metas  一组<meta>标签
+    * html_attribs  html标签属性
+    * html  html标签中的内容
+    * head  head标签中的内容
+    * title  title>标签中的内容
+    * metas  一组meta标签
     * styles  层叠样式表定义
-    * body_attribs  <body> 标签的属性
-    * body <body>标签的内容
+    * body_attribs  body 标签的属性
+    * body body标签的内容
     * navbar 用户定义的导航条
     * content 用户定义的页面内容
     * scripys  文档底部的JavaScript声明
@@ -105,6 +105,13 @@ def index(name):
 ```
 
 + flask-moment 处理日期和时间
+    * moment提供的格式化选项
+    * format()
+    * fromNow()
+    * fromTime()
+    * calendar()
+    * valueOf()
+    * unix()
 ```
 引入moment
 {% block scripts %}
@@ -115,3 +122,43 @@ def index(name):
 使用moment
 <p>The local date and time is {{ moment(current_time).format('LLL') }}.</p> <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
 ```
+
++ WTForms 表单处理
+    * 支持的标准字段
+    * StringField 文本字段
+    * TextAreaField  多行文本字段
+    * PasswordField  密码文本字段
+    * HiddenField  隐藏文本字段
+    * DateField  文本字段，值为datetime.date格式
+    * DateTimeField 文本字段，值为datetime.datetime格式
+    * IntegerFile  文本字段，值为整数
+    * DecimalFile  文本字段，值为decimal.Decimal
+    * FloatField  文本字段，值为浮点数
+    * BooleanField  复选框，值为True和False
+    * RadioField  一组单选框
+    * SelectField  下拉列表
+    * FileField  文件上传字段
+    * SubmitField  表单提交按钮
+    * FormField  把表单作为字段嵌入另一个表单
+    * FieldList  一组指定类型的字段
++ WTForms验证函数
+    * Email  验证电子邮件地址
+    * EqualTo 比较两个字段的值，常用于要求确认密码的情况
+    * IPAddress  验证IPv4地址
+    * Length  验证输入字符串的长度
+    * NumberRange  验证输入的值在数字范围内
+    * Optional  无输入值时跳过其他验证函数
+    * Required  确保字段中有数据
+    * Regexp  使用正则表达式验证输入值
+    * URL  验证URL
+    * AnyOf  确保输入值在可选列表中
+    * NoneOf  确保输入值不在可选值列表中
++ wtf提供的quick_form方法可以快速创建一个表单
+```
+在html中引入
+{{ wtf.quick_form(form) }}
+
+在路由中传入form
+return render_template("index.html",form=form)
+```
++ 在定义路由的时候通过传入methods来定义接收的请求方法
