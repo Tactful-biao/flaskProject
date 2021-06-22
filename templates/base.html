@@ -1,12 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% block head %}
-    <title>{% block title %}{% endblock %} - My Application</title>
-    {% endblock %}
-</head>
-<body>
-{% block body %}
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}BIAO{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 {% endblock %}
-</body>
-</html>
+
+{% block navbar %}
+    <div class="navbar navbar-inverse" role="navigation">
+        <div class="contain">
+            <div class="navbar-header">
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".nvabar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">Biao</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
