@@ -103,3 +103,15 @@ def index(name):
 <script type="text/javascript" src="my-script.js"></script>
 {% endblock %}
 ```
+
++ flask-moment 处理日期和时间
+```
+引入moment
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
+{% endblock %}
+
+使用moment
+<p>The local date and time is {{ moment(current_time).format('LLL') }}.</p> <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
+```
