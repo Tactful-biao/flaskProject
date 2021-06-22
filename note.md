@@ -163,3 +163,5 @@ return render_template("index.html",form=form)
 ```
 + 在定义路由的时候通过传入methods来定义接收的请求方法
 + 使用Session把数据存储到session中，通过redirect函数重定向，模板传递的参数从Session中取。
++ flash Flask提供的消息提醒函数
++ get_flashed_messages() 获取所有的提醒
