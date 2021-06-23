@@ -7,6 +7,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
+from flask_script import Shell, Manager
+from flask_migrate import Migrate, MigrateCommand
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -20,6 +22,9 @@ app.config['SECRET_KEY'] = 'dsfdghjgfsdassdfjhjkjjghfgdsewdsc'
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 db = SQLAlchemy(app)
+manager = Manager(app)
+migrate = Migrate(app, db)
+manager.add_command('db', MigrateCommand)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -55,6 +60,13 @@ def user(name):
   return render_template("user.html", name=name)
 
 
+def make_shell_context():
+  return dict(app=app, db=db, User=User, Role=Role)
+
+
+manager.add_command('Shell', Shell(make_context=make_shell_context))
+
+
 class NameForm(FlaskForm):
   name = StringField('What is your name?', validators=[DataRequired()])
   submit = SubmitField('Submit')
@@ -81,4 +93,4 @@ class User(db.Model):
 
 
 if __name__ == '__main__':
-  app.run()
+  manager.run()
