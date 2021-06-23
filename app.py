@@ -9,6 +9,7 @@ from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Shell, Manager
 from flask_migrate import Migrate, MigrateCommand
+from flask_mail import Mail, Message
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -19,12 +20,24 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SECRET_KEY'] = 'dsfdghjgfsdassdfjhjkjjghfgdsewdsc'
 
+# 发送邮件
+app.config['MAIL_SERVER'] = 'smtp.qq.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['BIAO_MAIL_SUBJECT_PREFIX'] = '[BIAO]'
+app.config['SECURITY_EMAIL_SENDER'] = '1208339113@qq.com'
+
+
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 db = SQLAlchemy(app)
 manager = Manager(app)
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
+mail = Mail(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -36,6 +49,8 @@ def index():
       user = User(username=form.name.data)
       db.session.add(user)
       session['known'] = False
+      if app.config['SECURITY_EMAIL_SENDER']:
+        send_email(app.config['SECURITY_EMAIL_SENDER'], 'New User', 'mail/new_user', user=user)
     else:
       session['known'] = True
     session['name'] = form.name.data
@@ -43,6 +58,13 @@ def index():
     return redirect(url_for('index'))
 
   return render_template("index.html", form=form, name=session.get('name'), known=session.get('known', False))
+
+
+def send_email(to, subject, template, **kwargs):
+  msg = Message(app.config['BIAO_MAIL_SUBJECT_PREFIX'] + subject, sender=app.config['SECURITY_EMAIL_SENDER'], recipients=[to])
+  msg.body = render_template(template + '.txt', **kwargs)
+  msg.html = render_template(template + '.html', **kwargs)
+  mail.send(msg)
 
 
 @app.errorhandler(404)

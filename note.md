@@ -243,3 +243,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:''@localhost/flask
     * offset()  偏移原查询返回的结果，返回一个新查询
     * order_by()  根据指定条件对原查询结果进行排序，返回一个新查询
     * group_by()  根据指定条件对原查询进行分组，返回一个新查询  
++ flask_migrate 数据库迁移
+    * python app.py db init 初始化
+    * python app.py db migrate -m "initial migration"  生成迁移
+    * python app.py db upgrade  把改动同步到数据库
++ flask_mail 发送邮件。 注意：os.environ.get() 在pycharm中可能读取不到...
