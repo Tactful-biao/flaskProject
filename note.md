@@ -248,3 +248,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:''@localhost/flask
     * python app.py db migrate -m "initial migration"  生成迁移
     * python app.py db upgrade  把改动同步到数据库
 + flask_mail 发送邮件。 注意：os.environ.get() 在pycharm中可能读取不到...
++ 大型项目结构
+    * app
+        + main  主要业务逻辑
+        + static  css/js/img文件
+        + templates  html模板文件
+        + models.py  数据库
+        + utils.py  工具库
+    * manage.py  项目启动文件
+    * config.py   配置文件
